@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+service ReviewService {
+    rpc ListReviews(ProductReviewRequest) returns (ReviewsResponse) {}
+    rpc CreateReview(ReviewPayload) returns (ReviewResponse) {}
+}
+
+message ProductReviewRequest {
+    int32 productId = 1;
+}
+
+message ReviewPayload {
+    int32 productId = 1;
+    string author = 2;
+    int32 rating = 3;
+    string comment = 4;
+}
+
+message ReviewResponse {
+    int32 productId = 1;
+    string author = 2;
+    int32 rating = 3;
+    string comment = 4;
+    string createdAt = 5;
+}
+
+message ReviewsResponse {
+    repeated ReviewResponse reviews = 1;
+}

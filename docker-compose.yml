@@ -1,0 +1,60 @@
+services:
+  inventory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node services/inventory/index.js
+    ports:
+      - "3002:3002"
+
+  shipping:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node services/shipping/index.js
+    ports:
+      - "3001:3001"
+
+  orders:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node services/orders/index.js
+    ports:
+      - "3003:3003"
+
+  reviews:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node services/reviews/index.js
+    ports:
+      - "3004:3004"
+
+  controller:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node services/controller/index.js
+    ports:
+      - "3000:3000"
+    environment:
+      INVENTORY_HOST: inventory
+      SHIPPING_HOST: shipping
+      ORDERS_HOST: orders
+      REVIEWS_HOST: reviews
+    depends_on:
+      - inventory
+      - shipping
+      - orders
+      - reviews
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run start-frontend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - controller
